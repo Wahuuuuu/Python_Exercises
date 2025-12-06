@@ -9,7 +9,7 @@ from itertools import product
 """
 P1: Coffee bar
 ---
-The boss of a coffee bar has work for us...
+The boss of a coffee bar has a work for us...
 Using these lists below, we have to create: 
     1. every combinations of a pair of drinks
     2. every order of the toppings
