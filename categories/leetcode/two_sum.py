@@ -26,7 +26,6 @@ Follow-up: Can you come up with an algorithm that is less than O(n2) time comple
 """
 
 class Solution(object):
-    import random
     def twoSum(self, nums, target):
         """
         :type nums: List[int]
@@ -36,7 +35,6 @@ class Solution(object):
         Idea: use a merge sort like algorithm
         """
 
-        # waiting: value : index of the other half
         waiting: dict[int, int] = {}
         for i in range(len(nums)):
             curr_num = nums[i]
@@ -46,12 +44,3 @@ class Solution(object):
             waiting[target - curr_num] = i
         
         return -1
-    
-    print(twoSum(0, [2,7,11,15], 9))
-    print(twoSum(0, [3,2,4], 6))
-    print(twoSum(0, [3,3], 6))
-
-
-
-
-        
