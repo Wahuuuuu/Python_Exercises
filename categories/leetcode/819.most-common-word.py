@@ -5,45 +5,64 @@
 #
 
 # @lc code=start
+import re
+
 class Solution:
-        
-    def create_word_count(self, paragraph) -> dict[str, int]:
+    def extract_words(self, paragraph: str) -> list[str]:
         """
-        This function returns a dict which the key : value of it 
-        is every unique word in paragraph : count of its appearence.
+        This function returns a list containing every word in paragraph
+        Furthermore, the words in list are lowercased
+        """
+        paragraph = paragraph.lower()
+        word_pattern = re.compile(r"[a-z]+")
+        return word_pattern.findall(paragraph)
+    
 
-        Furthermore, the keys of the dict are lowercased
+    def create_word_count(self, paragraph: str) -> dict[str, int]:
         """
-        word_count: dict[str, int] = {}
-        words: list[str] = paragraph.split()
+        This function returns a dict displaying each word appearing in the paragraph 
+        and its occurrence count, with the format "word:count"
+        Furthermore, the words are lowercased
+        """
+        words: list[str] = self.extract_words(paragraph)
+        word_count = {}
         for word in words:
-            # stip puntuations and to lower case
-            word = word.strip("!?',;.").lower()
-
-            # fill dict
             word_count[word] = word_count.get(word, 0) + 1
         
         return word_count
-    
+
 
     def mostCommonWord(self, paragraph: str, banned: list[str]) -> str:
+        """
+        This function returns the word that occures the most in the paragraph
+        that is not banned.
+
+        Parameter
+        ---
+        paragraph: str
+        banned: list[str]
+
+        Return
+        ---
+        max_word: str
+        """
         word_count: dict[str, int] = self.create_word_count(paragraph)
 
-        # searching the word which appears the most
-        most_frequent_word: tuple[str, int] = ("Error, no word detected", -1)
+        max_word, max_count = "Error, word not found", -1
         banned_words: set[str] = set(banned)
         for word in word_count:
             count = word_count[word]
-            if (word not in banned_words) and (count > most_frequent_word[1]):
-                most_frequent_word = (word, count)
+            if (word not in banned_words) and count > max_count:
+                max_word, max_count = word, count
+        
+        return max_word
 
-        return most_frequent_word[0]
-    
+
 
 if __name__ == "__main__":
     s = Solution()
-    assert s.mostCommonWord("Bob hit a ball, the hit BALL flew far after it was hit.", ["hit"]) == "ball"
-    assert s.mostCommonWord("a.", []) == "a"
+    assert(s.mostCommonWord("Bob hit a ball, the hit BALL flew far after it was hit.", ["hit"])) == "ball"
+    assert(s.mostCommonWord("a.", [])) == "a"
 
 
         
