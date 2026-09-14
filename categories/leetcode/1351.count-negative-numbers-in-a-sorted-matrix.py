@@ -22,7 +22,7 @@ class Solution:
         If there's any non-negative element in row, the index of the smallest non-negetive element
         must be in the interval [left, right].
 
-        Also, grid[i][j] >= grid[i+1][j] and grid[i][j] >= grid[i][j+1]
+        Also, grid[i][j] >= grid[i+1][j] and grid[i][j] >= grid[i][j+1] is true
         """
         i_smallest_non_negative = n - 1
         for row in grid:

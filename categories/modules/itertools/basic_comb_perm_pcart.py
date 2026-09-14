@@ -36,6 +36,3 @@ def solve_coffee_bar() -> None:
     print("Menu: ")
     for size, drink, topping in product(sizes, drinks, toppings):
         print(f"{size} x {drink} x {topping}")
-
-
-solve_coffee_bar()
