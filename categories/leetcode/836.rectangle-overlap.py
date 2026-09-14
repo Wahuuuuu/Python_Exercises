@@ -6,10 +6,27 @@
 
 # @lc code=start
 class Solution:
+    """
+    If (no overlap on axis x) and (no overlap on axis y), no overlap on rectangle
+    """
     def isRectangleOverlap(self, rec1: list[int], rec2: list[int]) -> bool:
-        in_rec1 = lambda x, y: (rec1[0] < x < rec1[2]) and (rec1[1] < y < rec1[3])
+        
+        overlap_x = self.isAxisOverlap(rec1[0], rec1[2], rec2[0], rec2[2])
+        overlap_y = self.isAxisOverlap(rec1[1], rec1[3], rec2[1], rec2[3])
 
-        return in_rec1(rec2[0], rec2[1]) or in_rec1(rec2[2], rec2[3]) or rec1 == rec2
+        return overlap_x and overlap_y
+        
+
+    
+    """
+    lower1 <= higher1
+    lower2 <= higher2
+    """
+    def isAxisOverlap(self, lower1: int, higher1: int, lower2: int, higher2: int) -> bool:
+        if (higher1 <= lower2) or (higher2 <= lower1) : 
+            return False
+        
+        return True
     
 
 if __name__ == "__main__":
