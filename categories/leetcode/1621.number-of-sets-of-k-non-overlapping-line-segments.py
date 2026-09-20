@@ -8,7 +8,7 @@
 class Solution:
     def initDp(self, n: int, k: int, dp: list[list[int]]) -> list[list[int]]:
         for ni in range(2, n+1):
-            dp[ni][1] = sum([x for x in range(ni)])
+            dp[ni][1] = sum(range(ni))
 
         for i in range(1, k+1):
             dp[i+1][i] = 1
@@ -35,18 +35,25 @@ class Solution:
         dp: list[list[int]] = [[0 for _ in range(k+1)] for _ in range(n+1)]
         dp = self.initDp(n, k, dp)
 
+        aux: list[int] = [1 for _ in range(k+1)]
+        aux[0] = 0
+
         # row 0-2 and column 0-1 are already initialized
         for ni in range(3, n+1):
             for ki in range(2, min(ni-1,k+1)):
                 dp[ni][ki] = dp[ni-1][ki] + sum([dp[i][ki-1] for i in range(ni-1, 1, -1)])
+                aux[ki-1] += dp[ni][ki-1]
 
-        print(dp[-1][-1] % (10**9 + 7))
+        self.printDp(dp)
+        print(sum([dp[x][2] for x in range(len(dp))]), sum([dp[x][3] for x in range(len(dp))]))
+        print(aux)
+
         return dp[-1][-1] % (10**9 + 7)
 
 
 
 s = Solution()
-s.numberOfSets(30, 7)
+print(s.numberOfSets(30, 7))
 
 # @lc code=end
 
