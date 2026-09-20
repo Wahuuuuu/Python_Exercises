@@ -10,9 +10,6 @@ class Solution:
         for ni in range(2, n+1):
             dp[ni][1] = sum(range(ni))
 
-        for i in range(1, k+1):
-            dp[i+1][i] = 1
-
         return dp
 
 
@@ -27,33 +24,43 @@ class Solution:
         dp[n][k] = number of ways we can draw k non-overlapping line segments in all n points
         
         Init: 
-        - for all dp[n][k] which n < k, dp[n][k] = 0
-        - for all dp[n][k] which n == k, dp[n][k] = 1
+        - for all dp[n][k] which n-1 == k, dp[n][k] = 1
+        - for all dp[n][k] which k == 1, dp[n][k] = sum(range(n))
 
         Function: dp[n][k] = dp[n-1][k] + (dp{n-1}{k-1} + dp{n-2}{k-1} + ... + dp{n-(n-2)}{k-1})
+            - In code, the sequence of (dp{n-1}{k-1} + dp{n-2}{k-1} + ... + dp{n-(n-2)}{k-1}) will be maintained
+              in aux.
+              aux[n] represents (dp{n}{k-1} + dp{n-1}{k-1} + ... + dp{n-(n-2)}{k-1})
         """
         dp: list[list[int]] = [[0 for _ in range(k+1)] for _ in range(n+1)]
         dp = self.initDp(n, k, dp)
 
-        aux: list[int] = [1 for _ in range(k+1)]
-        aux[0] = 0
+        # init aux, the aux[n] will not be need
+        aux: list[int] = [0 for _ in range(n+1)]
+        for i in range(2, n+1):
+            aux[i] = aux[i-1] + i-1
+            aux[i-1] = aux[i-1] + aux[i-2]
 
-        # row 0-2 and column 0-1 are already initialized
-        for ni in range(3, n+1):
-            for ki in range(2, min(ni-1,k+1)):
-                dp[ni][ki] = dp[ni-1][ki] + sum([dp[i][ki-1] for i in range(ni-1, 1, -1)])
-                aux[ki-1] += dp[ni][ki-1]
+        # start dp
+        for ki in range(2, k+1):
+            dp[ki+1][ki] = 1
 
-        self.printDp(dp)
-        print(sum([dp[x][2] for x in range(len(dp))]), sum([dp[x][3] for x in range(len(dp))]))
-        print(aux)
+            for ni in range(ki+2, n+1):
+                dp[ni][ki] = dp[ni-1][ki] + aux[ni-1]
 
+            # maintain aux
+            for ni in range(n+1):
+                if ni < ki:
+                    aux[ni] = 0
+                else:
+                    aux[ni] = dp[ni][ki] + aux[ni-1]
+                
         return dp[-1][-1] % (10**9 + 7)
 
 
 
 s = Solution()
-print(s.numberOfSets(30, 7))
+print(s.numberOfSets(30,7))
 
 # @lc code=end
 
