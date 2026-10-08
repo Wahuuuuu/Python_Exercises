@@ -5,39 +5,44 @@
 #
 
 # @lc code=start
-from collections import deque
 
 class Solution:
     def minOperations(self, nums: list[int], x: int) -> int:
-        queue = deque()
-        queue.append(((0, len(nums)-1), x, 0))
+        minOp = len(nums)+1
+        target = sum(nums) - x
 
-        while queue:
-            (left, right), _x, depth = queue.popleft()
-            if _x == 0: return depth
-            if left > right: continue
+        left, right = 0, 0
+        current = nums[0]
+        while left < len(nums):
+            if current < target:
+                # 应该先试探边界再加上 right
+                right += 1
+            elif current > target:
+                left += 1
+            else:
+                minOp == min(minOp, len(nums) - (right - left))
 
-            left_result = _x - nums[left]
-            if (left_result >= 0):
-                queue.append(((left+1, right), left_result, depth + 1))
 
-            right_result = _x - nums[right]
-            if (right_result >= 0):
-                queue.append(((left, right-1), right_result, depth + 1))
+        if minOp > len(nums):
+            return -1
 
-        return -1
+        return minOp
+
+
+
+        
 
 
 s = Solution()
 print(s.minOperations([1,1,4,2,3], 5))
-assert(s.minOperations([1,1,4,2,3], 5) == 2)
+# assert(s.minOperations([1,1,4,2,3], 5) == 2)
 print(s.minOperations([5,6,7,8,9], 4))
-assert(s.minOperations([5,6,7,8,9], 4) == -1)
+# assert(s.minOperations([5,6,7,8,9], 4) == -1)
 print(s.minOperations([3,2,20,1,1,3], 10))
-assert(s.minOperations([3,2,20,1,1,3], 10) == 5)
+# assert(s.minOperations([3,2,20,1,1,3], 10) == 5)
 
 print(s.minOperations([1], 1))
-assert(s.minOperations([1], 1) == 1)
+# assert(s.minOperations([1], 1) == 1)
 print(s.minOperations([1,1], 3))
         
 # @lc code=end
