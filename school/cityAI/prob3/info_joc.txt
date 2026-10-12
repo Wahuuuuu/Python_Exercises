@@ -1,0 +1,3 @@
+Minecraft 1 True
+StardewValley 3 False
+PillaPilla 3 True
